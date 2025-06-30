@@ -148,10 +148,5 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-.bg-register {
-  background-image: url('/images/login.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
+
 </style>
