@@ -92,19 +92,31 @@ export default {
 }
 .player-container {
   margin-top: 150px;
+  display: flex;                  
+  flex-direction: column;        
+  align-items: center;           
+  justify-content: center;
   text-align: center;
+  padding: 0 20px;              
 }
+
 .media-image {
   width: 100%;
   max-width: 550px;
   margin-bottom: 20px;
   border-radius: 8px;
 }
+
 .audio-player {
   width: 70%;
+  max-width: 500px;              
   margin-top: 20px;
 }
+
 .controls {
   margin-top: 20px;
+  display: flex;                
+  align-items: center;
+  gap: 10px;                    
 }
 </style>
