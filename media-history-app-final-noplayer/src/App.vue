@@ -1,16 +1,31 @@
 <template>
-  <div class="flex h-screen text-gray-800">
-    <HistorySidebar @changeType="mediaType = $event" />
-    <div class="flex-1 overflow-auto p-8">
-      <HistoryPage :type="mediaType" />
-    </div>
+  <div class="app-container">
+    <!-- 判断当前路由，如果不是登录或注册页，则显示导航栏 -->
+    <ReusableNavbar v-if="!isAuthPage" />
+    
+    <router-view />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import HistorySidebar from './components/HistorySidebar.vue'
-import HistoryPage from './views/HistoryPage.vue'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import ReusableNavbar from '@/components/ReusableNavbar.vue'
 
-const mediaType = ref('music')
+// 当前路由信息
+const route = useRoute()
+
+// 登录注册页路径列表
+const authPages = ['/login', '/register']
+
+// 判断是否为登录注册页
+const isAuthPage = computed(() => authPages.includes(route.path))
 </script>
+
+<style>
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #fff;
+}
+</style>
