@@ -3,7 +3,7 @@
     <header class="navbar">
       <div class="nav-title">媒体播放器</div>
       <nav class="nav-links">
-        <router-link to="/">媒体播放</router-link>
+        <router-link to="/" exact>媒体播放</router-link>
         <router-link to="/history">历史播放</router-link>
       </nav>
     </header>
@@ -64,12 +64,12 @@ export default {
 
 <style scoped>
 .navbar {
-  width: 100vw;      
+  width: 100vw;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  padding: 0 5vw;     
+  padding: 0 5vw;
   height: 60px;
   display: flex;
   justify-content: space-between;
@@ -77,27 +77,49 @@ export default {
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   z-index: 1000;
-  max-width: none;    
-  margin: 0;          
+  max-width: none;
+  margin: 0;
 }
-.nav-links a {
-  margin-left: 40px;
-  text-decoration: none;
+
+/* ✅ 标题加粗 + 统一样式 */
+.nav-title {
+  font-size: 24px;
+  font-weight: bold;
   color: #333;
 }
+
+/* ✅ 导航链接样式与其它页面统一 */
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #409eff;
+}
+
 .router-link-exact-active {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
   text-decoration: underline;
 }
+
+/* ✅ 播放器内容区域布局 */
 .player-container {
   margin-top: 150px;
-  display: flex;                  
-  flex-direction: column;        
-  align-items: center;           
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0 20px;              
+  padding: 0 20px;
 }
 
 .media-image {
@@ -109,14 +131,14 @@ export default {
 
 .audio-player {
   width: 70%;
-  max-width: 500px;              
+  max-width: 500px;
   margin-top: 20px;
 }
 
 .controls {
   margin-top: 20px;
-  display: flex;                
+  display: flex;
   align-items: center;
-  gap: 10px;                    
+  gap: 10px;
 }
 </style>
