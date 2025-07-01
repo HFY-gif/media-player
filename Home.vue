@@ -58,7 +58,7 @@ export default {
   color: #333;
 }
 .router-link-exact-active {
-  font-weight: bold;
+  font-weight: normal;
   font-size: 20px;
   text-decoration: underline;
 }
