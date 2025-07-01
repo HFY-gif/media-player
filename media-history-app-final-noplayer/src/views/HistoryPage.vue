@@ -1,30 +1,25 @@
 <template>
-    <div>
-    <!-- 顶部导航栏 -->
-    <header class="navbar">
-      <div class="nav-title">媒体播放器</div>
-      <nav class="nav-links">
-        <router-link to="/home" exact>媒体播放</router-link>
-        <router-link to="/history">历史播放</router-link>
-      </nav>
-    </header>
-      
-   <div class="page-container">
+  <div>
+    <!-- 页面主体 -->
+    <div class="page-container">
       <div class="flex">
         <HistorySidebar @changeType="mediaType = $event" />
         <div class="flex-1 p-8">
-    <h2 class="text-2xl font-bold mb-4">{{ type === 'music' ? '🎵 音乐历史' : '🎬 视频历史' }}</h2>
-    <HistoryList :type="mediaType" />
+          <h2 class="text-2xl font-bold mb-4">
+            {{ mediaType === 'music' ? '🎵 音乐历史' : '🎬 视频历史' }}
+          </h2>
+          <HistoryList :type="mediaType" />
+        </div>
+      </div>
+    </div>
   </div>
-  </div>
-</div>
-</div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import HistorySidebar from '../components/HistorySidebar.vue'
 import HistoryList from '../components/HistoryList.vue'
+
 const mediaType = ref('music')
 </script>
 
@@ -39,7 +34,7 @@ const mediaType = ref('music')
   padding: 0 5vw;
   height: 60px;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
