@@ -4,7 +4,7 @@
     <header class="navbar">
       <div class="nav-title">媒体播放器</div>
       <nav class="nav-links">
-        <router-link to="/">媒体播放</router-link>
+        <router-link to="/home">媒体播放</router-link>
         <router-link to="/history">历史播放</router-link>
       </nav>
     </header>
