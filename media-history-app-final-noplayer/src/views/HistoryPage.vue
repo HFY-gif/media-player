@@ -69,7 +69,7 @@ const mediaType = ref('music')
 }
 
 .router-link-exact-active {
-  font-weight: bold;
+  font-weight: normal;
   font-size: 18px;
   text-decoration: underline;
 }
