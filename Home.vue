@@ -1,15 +1,7 @@
 <template>
   <div>
-    <header class="navbar">
-      <div class="nav-title">媒体播放器</div>
-      <nav class="nav-links">
-        <router-link to="/home">媒体播放</router-link>
-        <router-link to="/history">历史播放</router-link>
-      </nav>
-    </header>
-
     <main class="home-container">
-      <img src="@/assets/bofang.png" class="banner-img" />
+      <img src="@/assets/bofang.png" alt="播放Banner" class="banner-img" />
       <div class="buttons">
         <input type="file" ref="videoInput" accept="video/*" @change="handleVideoSelect" hidden />
         <input type="file" ref="audioInput" accept="audio/*" @change="handleAudioSelect" hidden />
@@ -22,6 +14,15 @@
 
 <script>
 export default {
+   data() {
+    return {
+      username: ''
+    }
+  },
+  mounted() {
+    const user = JSON.parse(localStorage.getItem('currentUser'))
+    this.username = user?.username || '游客'
+  },
   methods: {
     handleVideoSelect() {
       const file = this.$refs.videoInput.files[0]
@@ -36,46 +37,102 @@ export default {
         const url = URL.createObjectURL(file)
         this.$router.push({ path: '/audio-player', query: { src: url } })
       }
-    }
+    },
+    
   }
 }
 </script>
 
 <style scoped>
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 70px;
+  .navbar {
+  width: 100vw;
   position: fixed;
-  width: 90%;
   top: 0;
+  left: 0;
+  padding: 0 5vw;
+  height: 60px;
+  display: flex;
+  align-items: center;
   background-color: #fff;
-  box-shadow: 0 10px 100px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
 }
+
+/* 左侧标题固定左对齐 */
+.nav-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-right: auto;
+}
+
+
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
 .nav-links a {
-  margin-left: 40px;
   text-decoration: none;
   color: #333;
+  font-size: 16px;
+  transition: color 0.3s;
 }
+
+.nav-links a:hover {
+  color: #409eff;
+}
+
 .router-link-exact-active {
-  font-weight: normal;
-  font-size: 20px;
+  font-weight: nromal;
+  font-size: 18px;
   text-decoration: underline;
 }
 
 .home-container {
-  margin-top: 200px;
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 80px);
+  padding: 20px;
+  box-sizing: border-box;
   text-align: center;
 }
+
 .banner-img {
+  max-width: 90vw;
   width: 650px;
-  margin-bottom: 30px;
   border-radius: 8px;
+  margin-bottom: 30px;
+  object-fit: contain;
 }
+
+.buttons {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .buttons button {
-  margin: 10px 100px;
-  padding: 10px 20px;
+  padding: 12px 28px;
   font-size: 16px;
   border-radius: 8px;
+  border: none;
+  background-color: #409eff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  min-width: 140px;
 }
+
+.buttons button:hover {
+  background-color: #66b1ff;
+}
+
+
+
 </style>
