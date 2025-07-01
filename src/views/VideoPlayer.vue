@@ -44,14 +44,21 @@ export default {
 
 <style scoped>
 .navbar {
+  width: 100vw;      
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0 5vw;     
+  height: 60px;
   display: flex;
   justify-content: space-between;
-  padding: 20px 70px;
-  position: fixed;
-  width: 90%;
-  top: 0;
+  align-items: center;
   background-color: #fff;
-  box-shadow: 0 10px 100px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+  max-width: none;    
+  margin: 0;          
 }
 .nav-links a {
   margin-left: 40px;
