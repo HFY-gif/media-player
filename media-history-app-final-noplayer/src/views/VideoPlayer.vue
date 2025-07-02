@@ -1,4 +1,3 @@
-<!-- src/views/VideoPlayer.vue -->
 <template>
   <div>
     <main class="player-container">
@@ -16,23 +15,82 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data() {
     return {
       src: '',
-      playbackRate: '1'
+      playbackRate: '1',
+      duration: 0,
+      userId: null,
+      fileName: '',
+      startTime: 0,
+      timer: null
     }
   },
   mounted() {
-    this.src = this.$route.query.src
+    const query = this.$route.query
+    this.src = query.src
+    this.fileName = query.title || '未命名视频'
+    this.startTime = Number(query.start || 0)
+
+    const user = JSON.parse(localStorage.getItem('currentUser'))
+    this.userId = user?.user_id
+
+    this.$nextTick(() => {
+      const video = this.$refs.video
+      video.addEventListener('loadedmetadata', () => {
+        if (this.startTime > 0 && this.startTime < video.duration) {
+          video.currentTime = this.startTime
+        }
+        this.duration = Math.floor(video.duration)
+        this.addOrUpdateRecord() // ✅ 初始播放记录
+      })
+    })
+
+    this.timer = setInterval(this.syncPlayTime, 5000)
+  },
+  beforeUnmount() {
+    clearInterval(this.timer)
   },
   methods: {
-    onLoaded() {
-      this.$refs.video.playbackRate = parseFloat(this.playbackRate)
+    async addOrUpdateRecord() {
+      if (!this.userId || !this.src) return
+      try {
+        const res = await axios.post('http://localhost:5000/api/play_records', {
+          user_id: this.userId,
+          media_type: 'video',
+          media_id: this.src,
+          media_title: this.fileName,
+          media_url: this.src,
+          duration: Math.floor(this.$refs.video.currentTime)
+        })
+        console.log('✅ 初始播放记录添加成功', res.data)
+      } catch (err) {
+        console.error('添加记录失败', err)
+      }
+    },
+    async syncPlayTime() {
+      if (!this.userId || !this.src) return
+      try {
+        const res = await axios.post('http://localhost:5000/api/play_records', {
+          user_id: this.userId,
+          media_type: 'video',
+          media_id: this.src,
+          media_title: this.fileName,
+          media_url: this.src,
+          duration: Math.floor(this.$refs.video.currentTime)
+        })
+        console.log('⏱ 播放进度同步成功', res.data)
+      } catch (err) {
+        console.error('同步失败', err)
+      }
     }
   }
 }
 </script>
+
 
 <style scoped>
 .navbar {
@@ -53,7 +111,6 @@ export default {
   margin: 0;
 }
 
-/* ✅ 标题加粗 */
 .nav-title {
   font-size: 24px;
   font-weight: bold;
@@ -65,7 +122,6 @@ export default {
   gap: 30px;
 }
 
-/* ✅ 导航链接统一样式 */
 .nav-links a {
   text-decoration: none;
   color: #333;
@@ -73,12 +129,10 @@ export default {
   transition: color 0.3s;
 }
 
-/* ✅ 悬停变蓝 */
 .nav-links a:hover {
   color: #409eff;
 }
 
-/* ✅ 当前页高亮样式 */
 .router-link-exact-active {
   font-weight: bold;
   font-size: 18px;
@@ -94,5 +148,4 @@ export default {
   width: 100%;
   max-height: 80vh;
 }
-
 </style>
