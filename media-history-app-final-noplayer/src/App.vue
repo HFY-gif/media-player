@@ -16,7 +16,7 @@ import ReusableNavbar from '@/components/ReusableNavbar.vue'
 const route = useRoute()
 
 // 登录注册页路径列表
-const authPages = ['/login', '/register']
+const authPages = ['/', '/register']
 
 // 判断是否为登录注册页
 const isAuthPage = computed(() => authPages.includes(route.path))
