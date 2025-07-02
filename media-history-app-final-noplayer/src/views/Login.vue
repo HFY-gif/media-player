@@ -12,7 +12,7 @@
 
         <div class="flex space-x-4 border-b border-gray-300 pb-4">
           <router-link
-            to="/login"
+            to="/"
             class="flex-1 text-center py-3"
             :class="$route.path === '/' ? 'text-blue-600 border-b-2 border-blue-600 font-medium' : 'text-gray-400'">
             登录
@@ -34,7 +34,7 @@
               v-model="n_username"
               type="text"
               placeholder="请输入用户名"
-              class="w-full pl-12 pr-4 py-3 border border-gray-300 bg-white text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm placeholder-gray-400" />
+              class="w-full pl-8 pr-4 py-3 border border-gray-300 bg-white text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm placeholder-gray-400" />
           </div>
 
           <div class="relative">
@@ -45,7 +45,7 @@
               :type="n_showPassword ? 'text' : 'password'"
               v-model="n_password"
               placeholder="请输入密码"
-              class="w-full pl-12 pr-12 py-3 border border-gray-300 bg-white text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm placeholder-gray-400" />
+              class="w-full pl-8 pr-12 py-3 border border-gray-300 bg-white text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm placeholder-gray-400" />
             <button @click="togglePassword" type="button" class="absolute inset-y-0 right-0 input-icon text-gray-400">
               <i :class="n_showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-lg"></i>
             </button>
@@ -84,6 +84,7 @@ function getUsers() {
 const handleLogin = () => {
   if (!n_username.value || !n_password.value) {
     alert('请输入用户名和密码')
+    
     return
   }
 
@@ -99,6 +100,10 @@ const handleLogin = () => {
     alert('密码错误')
     return
   }
+
+
+  localStorage.setItem('currentUser', JSON.stringify({ username: n_username.value }))
+
 
   alert('登录成功！')
   n_router.push('/home')
