@@ -3,7 +3,7 @@
     <h2 class="text-xl font-semibold mb-6">历史记录</h2>
     <ul class="space-y-4">
       <li @click="emitType('music')" class="cursor-pointer hover:text-blue-600">🎵 音乐历史</li>
-      <li @click="emitType('video')" class="cursor-pointer hover:text-blue-600">🎬 媒体视频</li>
+      <li @click="emitType('video')" class="cursor-pointer hover:text-blue-600">🎬 视频历史</li>
     </ul>
   </div>
 </template>
