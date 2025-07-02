@@ -14,9 +14,10 @@
 
 <script>
 export default {
-   data() {
+  data() {
     return {
-      username: ''
+      username: '',
+      userId: localStorage.getItem('user_id')
     }
   },
   mounted() {
@@ -28,20 +29,29 @@ export default {
       const file = this.$refs.videoInput.files[0]
       if (file) {
         const url = URL.createObjectURL(file)
-        this.$router.push({ path: '/video-player', query: { src: url } })
+        const title = file.name
+        this.$router.push({
+          path: '/video-player',
+          query: { src: url, title }
+        })
       }
     },
     handleAudioSelect() {
       const file = this.$refs.audioInput.files[0]
       if (file) {
         const url = URL.createObjectURL(file)
-        this.$router.push({ path: '/audio-player', query: { src: url } })
+        const title = file.name
+        this.$router.push({
+          path: '/audio-player',
+          query: { src: url, title }
+        })
       }
-    },
-    
+    }
   }
 }
 </script>
+
+
 
 <style scoped>
   .navbar {
@@ -58,15 +68,12 @@ export default {
   z-index: 1000;
 }
 
-/* 左侧标题固定左对齐 */
 .nav-title {
   font-size: 24px;
   font-weight: bold;
   color: #333;
   margin-right: auto;
 }
-
-
 
 .nav-links {
   display: flex;
@@ -132,7 +139,4 @@ export default {
 .buttons button:hover {
   background-color: #66b1ff;
 }
-
-
-
 </style>
