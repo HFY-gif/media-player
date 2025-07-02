@@ -12,9 +12,9 @@
 
         <div class="flex space-x-4 border-b border-gray-300 pb-4">
           <router-link
-            to="/login"
+            to="/"
             class="flex-1 text-center py-3"
-            :class="$route.path === '/login' ? 'text-blue-600 border-b-2 border-blue-600 font-medium' : 'text-gray-400'">
+            :class="$route.path === '/' ? 'text-blue-600 border-b-2 border-blue-600 font-medium' : 'text-gray-400'">
             登录
           </router-link>
           <router-link
@@ -34,7 +34,7 @@
               v-model="username"
               type="text"
               placeholder="请输入用户名"
-              class="w-full pl-12 pr-4 py-3 border border-gray-300 bg-white text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm placeholder-gray-400" />
+              class="w-full pl-8 pr-4 py-3 border border-gray-300 bg-white text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm placeholder-gray-400" />
           </div>
 
           <div class="relative">
@@ -45,7 +45,7 @@
               :type="showPassword ? 'text' : 'password'"
               v-model="password"
               placeholder="请输入密码"
-              class="w-full pl-12 pr-12 py-3 border border-gray-300 bg-white text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm placeholder-gray-400" />
+              class="w-full pl-8 pr-12 py-3 border border-gray-300 bg-white text-gray-800 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm placeholder-gray-400" />
             <button @click="togglePassword" type="button" class="absolute inset-y-0 right-0 input-icon text-gray-400">
               <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'" class="text-lg"></i>
             </button>
@@ -79,8 +79,15 @@ const togglePassword = () => {
 
 // 从 localStorage 读取用户列表
 function getUsers() {
-  return JSON.parse(localStorage.getItem('users') || '[]')
+  const data = localStorage.getItem('users')
+  try {
+    const parsed = JSON.parse(data)
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
 }
+
 
 // 保存用户列表到 localStorage
 function saveUsers(users) {
@@ -88,6 +95,14 @@ function saveUsers(users) {
 }
 
 function handleRegister() {
+  console.log('点击注册') // ✅ 检查是否触发
+  console.log('输入用户名:', username.value)
+  console.log('输入密码:', password.value)
+  if (!username.value || !password.value) {
+    alert('请输入用户名和密码')
+    return
+  }
+
   const users = getUsers()
 
   if (users.find(u => u.username === username.value)) {
@@ -100,6 +115,7 @@ function handleRegister() {
   alert('注册成功')
   router.push('/login')
 }
+
 </script>
 
 
