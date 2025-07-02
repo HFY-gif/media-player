@@ -67,6 +67,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const router = useRouter()
 const username = ref('')
@@ -77,46 +78,31 @@ const togglePassword = () => {
   showPassword.value = !showPassword.value
 }
 
-// 从 localStorage 读取用户列表
-function getUsers() {
-  const data = localStorage.getItem('users')
-  try {
-    const parsed = JSON.parse(data)
-    return Array.isArray(parsed) ? parsed : []
-  } catch {
-    return []
-  }
-}
-
-
-// 保存用户列表到 localStorage
-function saveUsers(users) {
-  localStorage.setItem('users', JSON.stringify(users))
-}
-
-function handleRegister() {
-  console.log('点击注册') // ✅ 检查是否触发
-  console.log('输入用户名:', username.value)
-  console.log('输入密码:', password.value)
+const handleRegister = async () => {
   if (!username.value || !password.value) {
     alert('请输入用户名和密码')
     return
   }
 
-  const users = getUsers()
+  try {
+    const res = await axios.post('http://localhost:5000/api/register', {
+      username: username.value,
+      password: password.value
+    })
 
-  if (users.find(u => u.username === username.value)) {
-    alert('用户已存在')
-    return
+    if (res.data.success) {
+      alert('注册成功，请登录')
+      router.push('/login')
+    } else {
+      alert(res.data.message || '注册失败')
+    }
+  } catch (err) {
+    console.error(err)
+    alert('注册请求失败，请检查服务器状态')
   }
-
-  users.push({ username: username.value, password: password.value })
-  saveUsers(users)
-  alert('注册成功')
-  router.push('/login')
 }
-
 </script>
+
 
 
 <style scoped>
