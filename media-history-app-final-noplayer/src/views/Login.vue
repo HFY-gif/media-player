@@ -66,6 +66,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const n_router = useRouter()
 const n_username = ref('')
@@ -76,39 +77,33 @@ const togglePassword = () => {
   n_showPassword.value = !n_showPassword.value
 }
 
-// 从localStorage读取用户
-function getUsers() {
-  return JSON.parse(localStorage.getItem('users') || '[]')
-}
-
-const handleLogin = () => {
+const handleLogin = async () => {
   if (!n_username.value || !n_password.value) {
     alert('请输入用户名和密码')
-    
     return
   }
 
-  const users = getUsers()
-  const user = users.find(u => u.username === n_username.value)
+  try {
+    const res = await axios.post('http://localhost:5000/api/login', {
+      username: n_username.value,
+      password: n_password.value
+    })
 
-  if (!user) {
-    alert('用户不存在')
-    return
+    if (res.data.success) {
+      const userId = res.data.user_id
+      localStorage.setItem('currentUser', JSON.stringify({ username: n_username.value, user_id: userId }))
+      alert('登录成功！')
+      n_router.push('/home')
+    } else {
+      alert(res.data.message || '登录失败')
+    }
+  } catch (err) {
+    console.error(err)
+    alert('登录请求失败，请检查服务器状态')
   }
-
-  if (user.password !== n_password.value) {
-    alert('密码错误')
-    return
-  }
-
-
-  localStorage.setItem('currentUser', JSON.stringify({ username: n_username.value }))
-
-
-  alert('登录成功！')
-  n_router.push('/home')
 }
 </script>
+
 
 <style scoped>
 .input-icon {
